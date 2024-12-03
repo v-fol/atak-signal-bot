@@ -1,0 +1,6 @@
+signal-cli-config
+taky-mgmt.sock
+.vscode
+__pycache__
+*.pyc
+.venv
