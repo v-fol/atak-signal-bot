@@ -1,0 +1,41 @@
+services:
+  signal-cli-rest-api:
+    image: bbernhard/signal-cli-rest-api:latest
+    environment:
+      - MODE=json-rpc #supported modes: json-rpc, native, normal
+    ports:
+      - "8080:8080" #map docker port 8080 to host port 8080.
+    volumes:
+      - "./signal-cli-config:/home/.local/share/signal-cli" #map "signal-cli-config" folder on host system into docker container. the folder contains the password and cryptographic keys when a new number is registered
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/v1/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+      start_period: 2s
+    
+
+  publisher:
+    build:
+      context: ./signal-listener-publisher
+      dockerfile: ./Dockerfile
+      
+    container_name: publisher
+    volumes:
+      - .:/src
+    working_dir: /src/signal-listener-publisher
+    depends_on:
+      signal-cli-rest-api:
+        condition: service_healthy
+        restart: true
+    networks:
+      - app_network
+    environment:
+      - SIGNAL_CLI_REST_API_DOMAIN=signal-cli-rest-api
+    
+
+networks:
+  app_network:
+    driver: bridge
