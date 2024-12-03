@@ -1,0 +1,9 @@
+[project]
+name = "publisher"
+version = "0.1.0"
+description = "A simple signal listener and publisher"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "websockets>=14.1",
+]
