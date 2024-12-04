@@ -1,6 +1,8 @@
 signal-cli-config
+kafka-data
 taky-mgmt.sock
 .vscode
 __pycache__
 *.pyc
 .venv
+.pytest_cache

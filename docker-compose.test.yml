@@ -1,0 +1,10 @@
+services:
+  pytest-publisher:
+    build:
+      context: ./signal-listener-publisher
+      dockerfile: ./Dockerfile.test
+    container_name: pytest-publisher
+    volumes:
+      - .:/src
+    working_dir: /src/signal-listener-publisher
+    
