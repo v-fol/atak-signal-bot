@@ -2,13 +2,16 @@ import os
 import signal
 import subprocess
 import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 import logging
 
-SCRIPT_TO_RUN = "app/main.py"  # Replace with your Python script name
-DIRECTORY_TO_WATCH = os.path.dirname(os.path.abspath(SCRIPT_TO_RUN))
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+from config import SCRIPT_TO_RUN
+
 logging.basicConfig(level=logging.INFO)
+
+DIRECTORY_TO_WATCH = os.path.dirname(os.path.abspath(SCRIPT_TO_RUN))
 
 
 class ScriptReloader(FileSystemEventHandler):
@@ -27,7 +30,7 @@ class ScriptReloader(FileSystemEventHandler):
         self.start_script()
 
     def on_modified(self, event):
-        if event.src_path.endswith(".py"):  # Watch only Python files
+        if event.src_path.endswith(".py"):
             logging.info(f"Detected change in {event.src_path}")
             self.restart_script()
 
