@@ -4,7 +4,7 @@ services:
     environment:
       - MODE=json-rpc #supported modes: json-rpc, native, normal
     ports:
-      - "8080:8080" #map docker port 8080 to host port 8080.
+      - "8080:8080" 
     volumes:
       - "./signal-cli-config:/home/.local/share/signal-cli" #map "signal-cli-config" folder on host system into docker container. the folder contains the password and cryptographic keys when a new number is registered
     networks:
@@ -46,6 +46,12 @@ services:
       - ./kafka-data:/var/lib/kafka/data  # Store Kafka logs on your local machine.
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "kafka-broker-api-versions --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 
   publisher:
@@ -61,10 +67,18 @@ services:
       signal-cli-rest-api:
         condition: service_healthy
         restart: true
+      kafka:
+        condition: service_healthy
+        restart: true
     networks:
       - app_network
     environment:
       - SIGNAL_CLI_REST_API_DOMAIN=signal-cli-rest-api
+      - SIGNAL_CLI_REST_API_PORT=8080
+      - KAFKA_BROKER_DOMAIN=kafka
+      - KAFKA_BROKER_PORT=9092
+      - BOT_PHONE_NUMBER=+380931124245
+      - MODE=dev
 
   subscriber:
     build:
@@ -76,7 +90,9 @@ services:
       - .:/src
     working_dir: /src/subscriber-cot-sender
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
+        restart: true
     networks:
       - app_network
 
@@ -90,8 +106,7 @@ services:
       - subscriber
     networks:
       - app_network
-    
-
+  
 networks:
   app_network:
     driver: bridge
