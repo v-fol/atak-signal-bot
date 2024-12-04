@@ -62,7 +62,7 @@ class SignalMessage:
     def handle_text_message(self):
         if self.message.startswith("/"):
             self.route_command()
-        elif match := re.match(r"(^\d+\.\d+) (\d+\.\d+)\s*(.+)$", self.message):
+        elif match := re.match(r"(^[-+]?\d+\.\d+) ([+-]?\d+\.\d+)\s*(.+)$", self.message):
             self.handle_location_message(match)
         else:
             self.send_standard_response()
