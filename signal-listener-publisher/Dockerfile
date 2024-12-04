@@ -27,4 +27,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
-CMD ["uv", "run", "app/main.py"]
+CMD ["uv", "run", "app/watcher.py"]
