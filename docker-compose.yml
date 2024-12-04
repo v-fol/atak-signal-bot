@@ -80,7 +80,16 @@ services:
     networks:
       - app_network
 
-
+  taky:
+    image: python:3.8
+    container_name: taky
+    command: bash -c "pip install taky && taky"
+    ports:
+      - "8087:8087"
+    depends_on:
+      - subscriber
+    networks:
+      - app_network
     
 
 networks:
