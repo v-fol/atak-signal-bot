@@ -96,16 +96,13 @@ services:
     networks:
       - app_network
 
-  taky:
-    image: python:3.8
-    container_name: taky
-    command: bash -c "pip install taky && taky"
+  tak-server:
+    build:
+      context: ./tak-server
+      dockerfile: ./Dockerfile
+    container_name: tak-server
     ports:
       - "8087:8087"
-    depends_on:
-      - subscriber
-    networks:
-      - app_network
   
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
