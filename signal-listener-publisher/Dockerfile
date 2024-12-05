@@ -1,4 +1,3 @@
-# Use the latest stable Python image from the Docker Hub
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
@@ -27,4 +26,6 @@ ENV PATH="/app/.venv/bin:$PATH"
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
-CMD ["uv", "run", "app/main.py"]
+# if environment variable is set to dev, run the watcher script
+# otherwise, run the main script
+CMD ["sh", "-c", "if [ \"$MODE\" = \"dev\" ]; then uv run app/watcher.py; else uv run app/main.py; fi"]

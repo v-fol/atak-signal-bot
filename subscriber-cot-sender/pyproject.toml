@@ -1,9 +1,12 @@
 [project]
 name = "subscriber-cot-sender"
 version = "0.1.0"
-description = "Add your description here"
+description = "A simple subscriber that sends CoT messages to TAK server"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiohttp>=3.11.9",
     "confluent-kafka>=2.6.1",
+    "orjson>=3.10.12",
+    "watchdog>=6.0.0",
 ]

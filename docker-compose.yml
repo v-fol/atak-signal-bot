@@ -1,10 +1,13 @@
+version: '3.8'
+
 services:
   signal-cli-rest-api:
     image: bbernhard/signal-cli-rest-api:latest
+    container_name: signal-cli-rest-api
     environment:
       - MODE=json-rpc #supported modes: json-rpc, native, normal
     ports:
-      - "8080:8080" #map docker port 8080 to host port 8080.
+      - "8080:8080" 
     volumes:
       - "./signal-cli-config:/home/.local/share/signal-cli" #map "signal-cli-config" folder on host system into docker container. the folder contains the password and cryptographic keys when a new number is registered
     networks:
@@ -46,6 +49,12 @@ services:
       - ./kafka-data:/var/lib/kafka/data  # Store Kafka logs on your local machine.
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "kafka-broker-api-versions --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 
   publisher:
@@ -61,10 +70,18 @@ services:
       signal-cli-rest-api:
         condition: service_healthy
         restart: true
+      kafka:
+        condition: service_healthy
+        restart: true
     networks:
       - app_network
     environment:
-      - SIGNAL_CLI_REST_API_DOMAIN=signal-cli-rest-api
+      - SIGNAL_CLI_REST_API_DOMAIN=${SIGNAL_CLI_REST_API_DOMAIN}
+      - SIGNAL_CLI_REST_API_PORT=${SIGNAL_CLI_REST_API_PORT}
+      - BOT_PHONE_NUMBER=${BOT_PHONE_NUMBER}
+      - KAFKA_BROKER_DOMAIN=${KAFKA_BROKER_DOMAIN}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - MODE=${MODE}
 
   subscriber:
     build:
@@ -76,21 +93,58 @@ services:
       - .:/src
     working_dir: /src/subscriber-cot-sender
     depends_on:
+      kafka:
+        condition: service_healthy
+        restart: true
+    networks:
+      - app_network
+    environment:
+      - SIGNAL_CLI_REST_API_DOMAIN=${SIGNAL_CLI_REST_API_DOMAIN}
+      - SIGNAL_CLI_REST_API_PORT=${SIGNAL_CLI_REST_API_PORT}
+      - BOT_PHONE_NUMBER=${BOT_PHONE_NUMBER}
+      - KAFKA_BROKER_DOMAIN=${KAFKA_BROKER_DOMAIN}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - MODE=${MODE}
+      - GROUP_ID=${GROUP_ID}
+      - AUTO_OFFSET_RESET=${AUTO_OFFSET_RESET}
+
+  tak-server:
+    build:
+      context: ./tak-server
+      dockerfile: ./Dockerfile
+    container_name: tak-server
+    ports:
+      - "8087:8087"
+    networks:
+      - app_network
+  
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8081:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    depends_on:
       - kafka
     networks:
       - app_network
+    profiles:
+      - monitoring
 
-  taky:
-    image: python:3.8
-    container_name: taky
-    command: bash -c "pip install taky && taky"
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
     ports:
-      - "8087:8087"
-    depends_on:
-      - subscriber
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
     networks:
       - app_network
-    
+    profiles:
+      - monitoring
 
 networks:
   app_network:

@@ -1,4 +1,3 @@
-# Use the latest stable Python image from the Docker Hub
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
@@ -25,6 +24,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Reset the entrypoint, don't invoke `uv`
-ENTRYPOINT []
 
-CMD ["sh", "-c", "if [ \"$MODE\" = \"dev\" ]; then uv run app/watcher.py; else uv run app/main.py; fi"]
+
+# Set the entrypoint to run pytest
+ENTRYPOINT ["pytest", "app/tests"]
+
