@@ -81,6 +81,7 @@ services:
       - BOT_PHONE_NUMBER=${BOT_PHONE_NUMBER}
       - KAFKA_BROKER_DOMAIN=${KAFKA_BROKER_DOMAIN}
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - TOPIC=${TOPIC}
       - MODE=${MODE}
 
   subscriber:
@@ -107,6 +108,8 @@ services:
       - MODE=${MODE}
       - GROUP_ID=${GROUP_ID}
       - AUTO_OFFSET_RESET=${AUTO_OFFSET_RESET}
+      - TOPIC=${TOPIC}
+
 
   tak-server:
     build:
