@@ -95,6 +95,15 @@ services:
         restart: true
     networks:
       - app_network
+    environment:
+      - SIGNAL_CLI_REST_API_DOMAIN=signal-cli-rest-api
+      - SIGNAL_CLI_REST_API_PORT=8080
+      - BOT_PHONE_NUMBER=+380931124245
+      - KAFKA_BROKER_DOMAIN=kafka
+      - KAFKA_BROKER_PORT=9092
+      - MODE=dev
+      - GROUP_ID=python-consumer-group
+      - AUTO_OFFSET_RESET=earliest
 
   tak-server:
     build:
@@ -103,6 +112,8 @@ services:
     container_name: tak-server
     ports:
       - "8087:8087"
+    networks:
+      - app_network
   
   kafka-ui:
     image: provectuslabs/kafka-ui:latest

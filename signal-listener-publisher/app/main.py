@@ -6,7 +6,13 @@ import logging
 from client import SignalClient
 from message_processor import SignalMessage, HandleAction
 from publisher import KafkaPublisher as Producer
-from config import TOPIC, KAFKA_BROKER, SIGNAL_CLI_REST_API_URL, BOT_PHONE_NUMBER
+
+from config import (
+    TOPIC, 
+    KAFKA_BROKER, 
+    SIGNAL_CLI_REST_API_URL, 
+    BOT_PHONE_NUMBER
+)
 
 logging.basicConfig(level=logging.DEBUG)
 logging.info("Starting signal-listener-publisher")
@@ -40,7 +46,7 @@ class SignalListenerPublisher:
                 signal_message.response_message,
             )
             return
-
+        
         await self.publish_to_broker(signal_message)
 
     async def publish_to_broker(self, signal_message: SignalMessage) -> None:
