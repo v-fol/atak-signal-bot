@@ -24,7 +24,7 @@ class SignalMessage:
     source_number: str
     message_type: str
     envelope: dict
-    brocker_message: str = ""
+    brocker_message: bytes = ""
     response_message: str = ""
     handle_action: HandleAction = HandleAction.IGNORE
 
@@ -94,7 +94,7 @@ class SignalMessage:
                 "source_name": self.source_name,
                 "source_number": self.source_number,
             }
-        ).decode()
+        )
         self.handle_action = HandleAction.SEND_TO_BROKER
 
     def send_standard_response(self) -> None:

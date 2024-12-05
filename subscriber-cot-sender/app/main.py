@@ -1,5 +1,4 @@
 import logging
-import orjson
 import asyncio
 
 from broker_subscriber import BrokerSubscriber
@@ -19,7 +18,7 @@ from config import (
     AUTO_OFFSET_RESET
 )
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logging.info("Starting subscriber-cot-sender")
 
 
@@ -34,19 +33,19 @@ async def main():
 
     for message in subscriber.listen():
         tcp_client = TCPClient(TCP_HOST, TCP_PORT)
-        loaded_message = orjson.loads(message)
 
-        xml_cot_message = XMLTransformer(loaded_message).generate_cot()
+        xml_cot_message = XMLTransformer(message).generate_cot()
         try:
             tcp_client.send(xml_cot_message)
         finally:
             tcp_client.close()
+        
+        logging.info("CoT message sent successfully.")
         await signal_client.send_text_message(
             BOT_PHONE_NUMBER,
-            [loaded_message["source_number"]],
+            [message["source_number"]],
             "CoT message sent successfully.",
         )
-        logging.info("CoT message sent successfully.")
 
 
 def run():

@@ -56,7 +56,7 @@ class SignalListenerPublisher:
         if self.producer.error_cb_triggered:
             self.producer = Producer(KAFKA_BROKER, TOPIC)
 
-        self.producer.publish(orjson.dumps(signal_message.brocker_message))
+        self.producer.publish(signal_message.brocker_message)
         
         if self.producer.error_cb_triggered:
             logging.error("Broker error during publishing. Sending error message to Signal.")

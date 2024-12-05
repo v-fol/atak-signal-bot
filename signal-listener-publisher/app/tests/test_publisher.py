@@ -36,10 +36,10 @@ def test_publish_message_success(kafka_publisher):
     """
     kafka_publisher._producer.produce = MagicMock()
 
-    kafka_publisher.publish("test-message")
+    kafka_publisher.publish(b'{"key":"test-message"}')
 
     kafka_publisher._producer.produce.assert_called_once_with(
-        kafka_publisher.topic, value="test-message", callback=ANY
+        kafka_publisher.topic, value=b'{"key":"test-message"}', callback=ANY
     )
     kafka_publisher._producer.poll.assert_called_once_with(0)
 
@@ -54,7 +54,7 @@ def test_publish_message_failure(kafka_publisher, caplog):
     kafka_publisher._producer.produce = mock_produce
 
     with caplog.at_level("ERROR"):
-        kafka_publisher.publish("test-message")
+        kafka_publisher.publish(b'{"key":"test-message"}')
         assert "Message delivery failed: Delivery error" in caplog.text
 
 

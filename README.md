@@ -43,7 +43,7 @@ Follow these steps to set up and run the project.
 #### Prerequisites
 1. Install [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/).
 
-For this project yoy will need:
+   For this project yoy will need:
 - **Docker Engine**: 19.03.0 or later
 - **Docker Compose**: 1.27.0 or later
 
@@ -56,11 +56,11 @@ For this project yoy will need:
    ```
 
 2. Edit the `.env` file and add your Signal phone number.
-```bash
-# Example
-BOT_PHONE_NUMBER=+38099999999
-```
-For other environment settings look `docs/ENV.MD`
+   ```bash
+   # Example
+   BOT_PHONE_NUMBER=+38099999999
+   ```
+   For other environment settings look `docs/ENV.MD`
 
 3. Build and start the Docker containers:
    ```bash
@@ -90,16 +90,40 @@ For other environment settings look `docs/ENV.MD`
 
    This step connects your ATAK client to the TAK server running in the project.
 
-Now the project should be up and running, and the ATAK client will start receiving CoT events from the system!
+   Now the project should be up and running, and the ATAK client will start receiving CoT events from the system!
 
 7. Now you can test the bot, send a message in Signal to your number you entered in step 2. from another account in format - <lat> <lon> <name> (latitude, longitude, name separated with sapces) for example:
-```bash
-40.7128 74.0060 Tank
-40.7128 -74.0060 New trench
-```
-**You should see a marker in your ATAK client on thouse coordinates**
+   ```bash
+   40.7128 74.0060 Tank
+   40.7128 -74.0060 New trench
+   ```
+   **You should see a marker in your ATAK client on thouse coordinates**
 ## Demo
 [Watch the demo video](https://private-user-images.githubusercontent.com/72522652/392845283-b5d08216-9e76-4a7d-9ca6-5bfb9234cfcd.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzM0MDczMjksIm5iZiI6MTczMzQwNzAyOSwicGF0aCI6Ii83MjUyMjY1Mi8zOTI4NDUyODMtYjVkMDgyMTYtOWU3Ni00YTdkLTljYTYtNWJmYjkyMzRjZmNkLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDEyMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMjA1VDEzNTcwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU4MzZjNzg3YjkzYTJkZGQ4OWNkNzYzNGIzMmFhZjAzNjIyOWNjNGMwMGE1YjdjZmNiNjc1OWNiNGEzMzgyNDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.VDFlFyfZUqcMKD3igr2kX8VTVR7GQ7yrfxyT4PVZARU)
+
+## Development
+
+1. Enable hot reloading for bouth the publisher and subscriber apps.
+
+   Change the `MODE` environment variable in the `.env` file to `dev`
+
+   ```bash
+   MODE=dev
+   ```
+   This will use watchdog for the containers starting file.
+   For the changes to take place you need to rebuild the containers `docker compose up --build`
+
+2. You can also enable monitoring services `kafka-ui` and `dozzle` by running compose with the **--profile monitoring** argument `docker compose --profile monitoring up`.
+
+   Now you can access [kafka-ui](https://github.com/provectus/kafka-ui) at `localhost:8081` and [dozzle](https://github.com/amir20/dozzle) at `localhost:9999`
+
+## Testing
+
+Tests are located in `.../app/tests` folders, you can run them with:
+```bash
+docker compose -f docker-compose.test.yml up --build
+```
+
 ## Project file structure
 ```javascript
 ├── docs                              
