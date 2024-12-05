@@ -13,7 +13,7 @@ The project uses a **Pub/Sub pattern** and **microservice architecture**. It com
 - **`subscriber-cot-sender`**: A Python app that retrieves messages from Kafka, transforms them to XML (CoT format), and sends them to a TAK server.
 - **`tak-server`**: A server that communicates with ATAK devices (ATAK, WinTAK, iTAK) over TCP.
 
-![High Level Architecture Diagram](https://i.imghippo.com/files/jahm1536n.png)
+![High Level Architecture Diagram](docs/media/hla-diagram.svg)
 
 ## Tools used
 
