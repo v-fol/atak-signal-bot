@@ -20,6 +20,7 @@ from config import (
 )
 
 logging.basicConfig(level=logging.DEBUG)
+logging.info("Starting subscriber-cot-sender")
 
 
 async def main():
