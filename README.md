@@ -124,6 +124,16 @@ Tests are located in `.../app/tests` folders, you can run them with:
 docker compose -f docker-compose.test.yml up --build
 ```
 
+## What Can Be Improved (Roadmap)
+
+| Task                  | Description                                                                                                                                           | Status        |
+| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| **Security**          | Currently, there is minimal focus on security for service communication, persistent data, and partially CoT message security. Future steps include encrypting data transferred between services and stored persistently. Additionally, consider implementing authentication logic for Signal communication and addressing other security-related concerns. | `in_rogress` |
+| **Commands Functionality** | The functionality is currently quite limited. It would be beneficial to add `/commands` that can modify marker types, marker durations, or introduce other customizable features. | `pending`     |
+| **Scalability**       | Introduce clearer options for horizontal scaling using Kubernetes or other scaling methods to improve the system's scalability.                        | `pending`     |
+| **Other**             | Focus on enhancements such as fault tolerance, testing, and speed optimization to improve the overall performance and reliability of the system.       | `pending`     |
+
+
 ## Project file structure
 ```javascript
 ├── docs                              

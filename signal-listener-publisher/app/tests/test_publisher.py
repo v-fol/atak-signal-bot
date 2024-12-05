@@ -36,10 +36,12 @@ def test_publish_message_success(kafka_publisher):
     """
     kafka_publisher._producer.produce = MagicMock()
 
-    kafka_publisher.publish(b'{"key":"test-message"}')
+    dummy_message = b'{"key":"test-message"}'
+
+    kafka_publisher.publish(dummy_message)
 
     kafka_publisher._producer.produce.assert_called_once_with(
-        kafka_publisher.topic, value=b'{"key":"test-message"}', callback=ANY
+        kafka_publisher.topic, value=dummy_message, callback=ANY
     )
     kafka_publisher._producer.poll.assert_called_once_with(0)
 
