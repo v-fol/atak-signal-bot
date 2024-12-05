@@ -99,7 +99,7 @@ Now the project should be up and running, and the ATAK client will start receivi
 ```
 **You should see a marker in your ATAK client on thouse coordinates**
 ## Demo
-[Watch the demo video](docs/media/demo.mp4)
+[Watch the demo video](https://private-user-images.githubusercontent.com/72522652/392845283-b5d08216-9e76-4a7d-9ca6-5bfb9234cfcd.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzM0MDczMjksIm5iZiI6MTczMzQwNzAyOSwicGF0aCI6Ii83MjUyMjY1Mi8zOTI4NDUyODMtYjVkMDgyMTYtOWU3Ni00YTdkLTljYTYtNWJmYjkyMzRjZmNkLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDEyMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMjA1VDEzNTcwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU4MzZjNzg3YjkzYTJkZGQ4OWNkNzYzNGIzMmFhZjAzNjIyOWNjNGMwMGE1YjdjZmNiNjc1OWNiNGEzMzgyNDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.VDFlFyfZUqcMKD3igr2kX8VTVR7GQ7yrfxyT4PVZARU)
 ## Project file structure
 ```javascript
 ├── docs                              
