@@ -1,4 +1,5 @@
 import logging
+import orjson
 
 from confluent_kafka import Consumer
 
@@ -33,6 +34,7 @@ class BrokerSubscriber:
                     if msg.error():
                         logging.error(f"Error: {msg.error()}")
                     else:
-                        yield msg.value().decode()
+                        yield orjson.loads(msg.value())
         finally:
+            logging.info("Closing consumer.")
             self.consumer.close()

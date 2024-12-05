@@ -47,14 +47,14 @@ def test_route_message_handle_location(signal_message):
     signal_message.message = "40.7128 74.0060 Test Place"
     signal_message.route_message()  # Will invoke handle_location_message
     assert signal_message.handle_action == HandleAction.SEND_TO_BROKER
-    assert signal_message.brocker_message == '{"latitude":"40.7128","longitude":"74.0060","name":"Test Place","source_name":"Test User","source_number":"1234567890"}'
+    assert signal_message.brocker_message == b'{"latitude":"40.7128","longitude":"74.0060","name":"Test Place","source_name":"Test User","source_number":"1234567890"}'
 
 def test_route_message_handle_location_with_minus(signal_message):
     """Test route_message for location message."""
     signal_message.message = "40.7128 -74.0060 Test Place"
     signal_message.route_message()  # Will invoke handle_location_message
     assert signal_message.handle_action == HandleAction.SEND_TO_BROKER
-    assert signal_message.brocker_message == '{"latitude":"40.7128","longitude":"-74.0060","name":"Test Place","source_name":"Test User","source_number":"1234567890"}'
+    assert signal_message.brocker_message == b'{"latitude":"40.7128","longitude":"-74.0060","name":"Test Place","source_name":"Test User","source_number":"1234567890"}'
 
 def test_route_message_handle_standard_response(signal_message):
     """Test route_message for standard message."""
