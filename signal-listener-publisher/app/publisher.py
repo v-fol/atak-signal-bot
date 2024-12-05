@@ -1,5 +1,6 @@
 import logging
 from abc import ABC, abstractmethod
+import orjson
 
 from confluent_kafka import Producer
 
@@ -56,7 +57,7 @@ class KafkaPublisher(Publisher):
                 logging.info("Message delivered to %s [%s]", msg.topic(), msg.partition())
 
         logging.debug("Publishing message to kafka")
-        self._producer.produce(self.topic, value=message, callback=delivery_report)
+        self._producer.produce(self.topic, value=orjson.loads(message).encode("utf-8"), callback=delivery_report)
         self._producer.poll(0)
 
     def close(self) -> None:
