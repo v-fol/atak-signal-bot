@@ -36,7 +36,8 @@ Python related:
 ## Design Philosophy
 
 This project uses a **Pub/Sub microservice architecture** to ensure **modularity**, **scalability**, and **resilience**. **Kafka** acts as the central **message broker**, decoupling services and enabling **asynchronous communication**. Each service handles a specific task, making the system easier to **develop**, **test**, and **maintain**. **Docker** and **Docker Compose** provide consistent environments, simplifying **deployment** and **scaling**. This architecture allows **independent scaling** of services, efficient handling of **high-throughput messaging**, and **fault tolerance**, as services can recover or restart without affecting the entire system. By isolating functionality, it’s easier to **extend** the system with new **features** or **integrations** in the future.
-# Steps to Run the Project
+
+## Steps to Run the Project
 
 Follow these steps to set up and run the project.
 
@@ -132,6 +133,44 @@ docker compose -f docker-compose.test.yml up --build
 | **Commands Functionality** | The functionality is currently quite limited. It would be beneficial to add `/commands` that can modify marker types, marker durations, or introduce other customizable features. | `pending`     |
 | **Scalability**       | Introduce clearer options for horizontal scaling using Kubernetes or other scaling methods to improve the system's scalability.                        | `pending`     |
 | **Other**             | Focus on enhancements such as fault tolerance, testing, and speed optimization to improve the overall performance and reliability of the system.       | `pending`     |
+
+## Description of the CoT protocol formatting
+This is an example of a Cursor-on-Target (CoT) XML message that we send to ATAK.
+
+```xml
+<event version="2.0" type="a-h-A-M-A" uid="f3bf92572bd74ea39930ba1f194b4a6e" how="m-g"
+    time="2024-12-06T02:13:41.727825Z" start="2024-12-06T02:13:41.727964Z"
+    stale="2024-12-06T02:14:41.728001Z">
+    <detail>
+        <contact callsign="Tank" />
+    </detail>
+    <point lat="49.852675" lon="23.965056" hae="0" ce="10" le="10" />
+</event>
+```
+### XML Fields Explained
+
+1. `<event>` Element
+   - **`version`**: The schema version being used (in this case, `2.0`).
+   - **`type`**: The type of event. For example, `a-h-A-M-A` represents “atomshostile-Airborne-Military-Attack/Strike” will give a visualy different marker on the map than `a-f-G` “atoms-friendly-ground”. More info here - [MIL-STD-2525B specification](https://freetakteam.github.io/FreeTAKServer-User-Docs/About/architecture/mil_std_2525/)
+   - **`uid`**: A unique identifier for the event, generated using a UUID.
+   - **`how`**: Gives a hint about how the coordinates were generated.
+   - **`time`**: Time stamp: when the event was generated.
+   - **`start`**: Starting time when an event should be considered valid.
+   - **`stale`**: Ending time when an event should no longer be considered valid.
+   
+   **Time has to be in a W3C XML Schema dateTime format.**
+
+3. `<detail>` Element
+   Provides additional descriptive information about the event:
+   - **`<contact>`**: Contains the `callsign` (name or identifier) of the entity. In this example, it’s `"Tank"`.
+
+4. `<point>` Element
+   Specifies the geographic location of the event:
+   - **`lat`**: Latitude referred to the WGS 84 ellipsoid in degrees.
+   - **`lon`**: Longitude referred to the WGS 84 in degrees.
+   - **`hae`**: Height above the WGS ellipsoid in meters.
+   - **`ce`**: Circular 1-sigma or a circular area about the point in meters.
+   - **`le`**: Linear 1-sigma error or an altitude range about the point in meters.
 
 
 ## Project file structure
